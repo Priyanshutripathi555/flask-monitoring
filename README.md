@@ -75,3 +75,7 @@ git push -u origin main
 ```
 
 ---
+
+## 📬 Contact
+**Author:** Priyanshu Tripathi  
+[GitHub](https://github.com/Priyanshutripathi555)
