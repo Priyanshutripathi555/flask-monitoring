@@ -1,0 +1,75 @@
+
+# === EC2 Setup ===
+# (Done from AWS Console)
+# - Launch Ubuntu EC2 (t2.medium)
+# - Open ports: 22 (SSH), 80 (HTTP), 9090 (Prometheus), 3000 (Grafana)
+
+# === Connect to EC2 ===
+ssh -i your-key.pem ubuntu@<public-ip>
+
+# === Update and Install Dependencies ===
+sudo apt update && sudo apt upgrade -y
+sudo apt install python3-pip git docker.io docker-compose -y
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# === Clone Project or Create Directory ===
+git clone https://github.com/Priyanshutripathi555/flask-monitoring.git
+cd flask-monitoring
+
+# === Flask App Setup ===
+# app.py (already present)
+# requirements.txt
+echo -e "Flask
+prometheus_client" > requirements.txt
+pip3 install -r requirements.txt
+
+# === Run Flask App (for testing) ===
+python3 app.py
+
+# === Install Prometheus ===
+wget https://github.com/prometheus/prometheus/releases/download/v2.50.1/prometheus-2.50.1.linux-amd64.tar.gz
+tar xvf prometheus-2.50.1.linux-amd64.tar.gz
+mv prometheus-2.50.1.linux-amd64 prometheus
+cd prometheus
+# Create prometheus.yml with correct scrape config
+./prometheus --config.file=prometheus.yml &
+
+# === Install Grafana ===
+sudo apt-get install -y apt-transport-https software-properties-common
+sudo mkdir -p /etc/apt/keyrings
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+sudo apt update
+sudo apt install grafana -y
+sudo systemctl start grafana-server
+sudo systemctl enable grafana-server
+
+# === Docker Setup (if using Docker) ===
+sudo usermod -aG docker $USER
+# Logout and re-login
+
+# === Docker Compose Up ===
+docker-compose up -d
+
+# === GitHub SSH Setup ===
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+# Copy and add to GitHub SSH Settings
+cat ~/.ssh/id_rsa.pub
+
+# === Configure Git ===
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+
+# === Push Project to GitHub (via SSH) ===
+git init
+git remote add origin git@github.com:your_username/flask-monitoring.git
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git push -u origin main
+
+# === Restarting After EC2 Reboot ===
+docker ps -a
+docker ps -a -q | xargs docker start
+cd flask-monitoring && docker-compose up -d
