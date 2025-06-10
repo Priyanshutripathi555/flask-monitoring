@@ -75,7 +75,10 @@ git push -u origin main
 ```
 
 ---
+![flask app page](https://github.com/user-attachments/assets/0f283c1e-16a6-4c6e-bb29-b61431ed19bb)
+![grafana dashboard](https://github.com/user-attachments/assets/b82dbdcc-7114-4e27-aad9-892c2ac57f15)
 
 ## 📬 Contact
 **Author:** Priyanshu Tripathi  
 [GitHub](https://github.com/Priyanshutripathi555)
+
