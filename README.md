@@ -61,6 +61,12 @@ Login to Grafana with:
 - **Password**: `admin`
 
 > 📌 Add Prometheus as the Grafana data source.
+Import dashboard:
+
+Use ID 1860 for Node Exporter Full dashboard
+
+Use ID 11074 for Docker container monitoring
+
 
 ---
 
